@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add student to all bootcamp courses</title>
+    <style>
+        .container{
+            width:500px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        input{
+            margin: 10px;
+        }
+        button{
+            width:30%;
+            height: 30%;
+            margin: 10%;
+        }
+        table{
+            width: 100%;
+            border: 1px solid black;
+        }
+        table td{
+            padding: 10px;
+            background-color: #eee;
+            border: 1px solid black;
+
+        }
+        table thead td{
+            background-color: antiquewhite;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course_form">
+            <h1>Add a new course</h1>
+            <form action="/add_course" method="post">
+                {% csrf_token %}
+                <div>
+                    <label>Name:</label>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    <label >Description:</label>
+                    <textarea name="desc" cols="30" rows="5"></textarea>
+                </div>
+                <button type="submit" value="Add">Add</button>
+            </form>
+        </div>
+        <div class="course_table">
+            <h1>Courses</h1>
+            <table>
+                <tr>
+                    <th>course name</th>
+                    <th>Description</th>
+                    <th>Date added</th>
+                    <th>Actions</th>
+                </tr>
+                {%for course in courses%}
+                <tr>
+                    <td>{{course.name}}</td>
+                    <td>{{course.description}}</td>
+                    <td>{{course.created_at}}</td>
+                    <td><a href="/courses/destroy/{{course.id}}">delete</a></td>
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+    </div>
+    {% if messages %}
+    <ul class="messages">    
+    {% for message in messages %}    
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>
